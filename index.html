@@ -3,158 +3,425 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>플레이위드 (PlayWith) - Mobile App Studio</title>
-    <meta name="description" content="플레이위드는 모바일 앱을 개발하는 1인 사업자입니다. ChipMate Holdem 등 사용자 친화적인 Android 앱을 만듭니다.">
+    <title>PlayWith — Mobile App Studio</title>
+    <meta name="description" content="플레이위드는 사용자 중심의 모바일 앱을 만드는 1인 스튜디오입니다. ChipMate Holdem 등 일상에서 쓸모 있는 Android 앱을 개발합니다.">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23c8102e'/%3E%3Ccircle cx='50' cy='50' r='30' fill='%23ffd700'/%3E%3Ctext x='50' y='62' text-anchor='middle' font-family='serif' font-size='34' font-weight='bold' fill='%23c8102e'%3EC%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-            line-height: 1.6;
-            color: #1a1a1a;
-            background: #f5f5f7;
+        :root {
+            --bg: #0a1f17;
+            --bg-alt: #0d2a1f;
+            --card: #14392b;
+            --card-hover: #1a4a39;
+            --border: rgba(255, 215, 0, 0.12);
+            --gold: #d4af37;
+            --gold-bright: #f4d35e;
+            --red: #c8102e;
+            --text: #f5f5f0;
+            --text-muted: rgba(245, 245, 240, 0.65);
+            --text-dim: rgba(245, 245, 240, 0.45);
         }
-        .container { max-width: 880px; margin: 0 auto; padding: 80px 24px 60px; }
-        header { text-align: center; margin-bottom: 64px; }
-        .logo {
-            font-size: 3rem;
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg);
+            background-image:
+                radial-gradient(ellipse at top left, rgba(212, 175, 55, 0.08), transparent 50%),
+                radial-gradient(ellipse at bottom right, rgba(200, 16, 46, 0.06), transparent 50%);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+        nav {
+            padding: 24px 0;
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(8px);
+            background: rgba(10, 31, 23, 0.7);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-inner { display: flex; align-items: center; justify-content: space-between; }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
             font-weight: 700;
-            color: #0a5c36;
+            font-size: 1.1rem;
+            color: var(--text);
+            text-decoration: none;
+        }
+        .nav-chip {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #e63946, #c8102e);
+            border: 3px solid #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold);
+            font-family: 'Noto Serif KR', serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .nav-links { display: flex; gap: 32px; font-size: 0.95rem; }
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--gold-bright); }
+        @media (max-width: 600px) { .nav-links { display: none; } }
+
+        .hero {
+            padding: 100px 0 80px;
+            text-align: center;
+        }
+        .hero-eyebrow {
+            display: inline-block;
+            padding: 6px 14px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            border-radius: 20px;
+            color: var(--gold-bright);
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 24px;
+            letter-spacing: 0.02em;
+        }
+        .hero h1 {
+            font-family: 'Noto Serif KR', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.1;
             letter-spacing: -0.02em;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #f5f5f0 0%, #d4af37 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            font-size: clamp(1.05rem, 2vw, 1.25rem);
+            color: var(--text-muted);
+            max-width: 580px;
+            margin: 0 auto 40px;
+        }
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: var(--gold);
+            color: var(--bg);
+            border-radius: 100px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+        .hero-cta:hover {
+            background: var(--gold-bright);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(212, 175, 55, 0.3);
+        }
+
+        section.block { padding: 64px 0; }
+        .section-label {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--gold);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
             margin-bottom: 12px;
         }
-        .tagline { color: #666; font-size: 1.15rem; font-weight: 400; }
-        section {
-            background: white;
-            border-radius: 16px;
-            padding: 36px 40px;
-            margin-bottom: 24px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.04);
-        }
         h2 {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            color: #1a1a1a;
+            font-family: 'Noto Serif KR', serif;
+            font-size: clamp(1.75rem, 3.5vw, 2.5rem);
             font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: -0.01em;
+        }
+        .section-intro {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            max-width: 600px;
+            margin-bottom: 40px;
+        }
+
+        .app-showcase {
+            background: linear-gradient(135deg, var(--card) 0%, var(--bg-alt) 100%);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 48px;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 40px;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        .app-showcase:hover { border-color: rgba(212, 175, 55, 0.3); }
+        .app-icon-large {
+            width: 120px;
+            height: 120px;
+            border-radius: 28px;
+            background: radial-gradient(circle at 50% 35%, #e63946 0%, #c8102e 60%, #8b0a1f 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 12px 40px rgba(200, 16, 46, 0.4);
+            flex-shrink: 0;
+        }
+        .app-icon-large::before {
+            content: '';
+            position: absolute;
+            inset: 12px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #e63946, #c8102e);
+            border: 4px solid #fff;
+        }
+        .app-icon-large::after {
+            content: 'C';
+            position: relative;
+            z-index: 1;
+            color: var(--gold);
+            font-family: 'Noto Serif KR', serif;
+            font-weight: 700;
+            font-size: 3rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .app-info h3 {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .app-info .tagline { color: var(--text-muted); margin-bottom: 16px; }
+        .app-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        .pill {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            font-size: 0.8rem;
+            color: var(--gold-bright);
+            font-weight: 500;
+        }
+        .pill.muted {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.08);
+            color: var(--text-muted);
+        }
+        @media (max-width: 600px) {
+            .app-showcase { padding: 32px 24px; grid-template-columns: 1fr; gap: 24px; text-align: center; }
+            .app-icon-large { margin: 0 auto; }
+        }
+
+        .values { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        @media (max-width: 700px) { .values { grid-template-columns: 1fr; } }
+        .value-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+            transition: all 0.2s;
+        }
+        .value-card:hover {
+            background: var(--card-hover);
+            transform: translateY(-2px);
+        }
+        .value-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(212, 175, 55, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            margin-bottom: 16px;
+        }
+        .value-card h3 { font-size: 1.1rem; margin-bottom: 8px; font-weight: 600; }
+        .value-card p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.55; }
+
+        .business-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 36px;
         }
         .info-grid {
             display: grid;
-            grid-template-columns: 160px 1fr;
-            gap: 14px 20px;
-        }
-        .label { color: #666; font-weight: 500; }
-        .value { color: #1a1a1a; font-weight: 500; }
-        .app-card {
-            border: 1px solid #e5e5e7;
-            border-radius: 12px;
-            padding: 24px;
-            margin-top: 16px;
-            transition: all 0.2s;
-        }
-        .app-card:hover { border-color: #0a5c36; }
-        .app-card h3 {
-            margin-bottom: 8px;
-            color: #0a5c36;
-            font-size: 1.25rem;
-        }
-        .app-card p { color: #555; }
-        .app-meta {
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid #f0f0f2;
-            font-size: 0.9rem;
-            color: #666;
-        }
-        a { color: #0a5c36; text-decoration: none; font-weight: 500; }
-        a:hover { text-decoration: underline; }
-        footer {
-            text-align: center;
-            color: #999;
-            font-size: 0.85rem;
-            margin-top: 48px;
-            padding-top: 32px;
-            border-top: 1px solid #e5e5e7;
+            grid-template-columns: 200px 1fr;
+            gap: 16px 24px;
+            margin-top: 8px;
         }
         @media (max-width: 600px) {
-            .container { padding: 48px 16px 40px; }
-            .logo { font-size: 2.25rem; }
-            section { padding: 24px; }
-            .info-grid { grid-template-columns: 1fr; gap: 4px; }
-            .info-grid .value { margin-bottom: 12px; }
+            .info-grid { grid-template-columns: 1fr; gap: 4px 0; }
+            .info-grid .value-text { margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+            .info-grid .value-text:last-child { border: none; padding: 0; margin: 0; }
+        }
+        .info-grid .label { color: var(--text-dim); font-weight: 500; font-size: 0.95rem; }
+        .info-grid .value-text { color: var(--text); font-weight: 500; }
+        .info-grid a { color: var(--gold-bright); text-decoration: none; }
+        .info-grid a:hover { text-decoration: underline; }
+
+        footer {
+            margin-top: 80px;
+            padding: 48px 0 32px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+        footer a { color: var(--text-muted); text-decoration: none; }
+        footer a:hover { color: var(--gold-bright); }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo">플레이위드</div>
-            <p class="tagline">Mobile App Studio · PlayWith</p>
-        </header>
-
-        <section>
-            <h2>About</h2>
-            <p>
-                플레이위드(PlayWith)는 서울에 기반을 둔 모바일 앱 개발 사업자입니다.
-                직관적이고 즐거운 사용자 경험을 제공하는 Android 앱을 만듭니다.
-                포커 칩 추적 도구 <strong>ChipMate Holdem</strong>을 시작으로,
-                일상에서 유용하게 쓰이는 도구형 앱을 지속적으로 개발하고 있습니다.
-            </p>
-        </section>
-
-        <section>
-            <h2>Business Information</h2>
-            <div class="info-grid">
-                <div class="label">상호</div>
-                <div class="value">플레이위드 (PlayWith)</div>
-
-                <div class="label">대표자</div>
-                <div class="value">주은오 (Joo Eun Oh)</div>
-
-                <div class="label">사업자등록번호</div>
-                <div class="value">880-58-00862</div>
-
-                <div class="label">개업일</div>
-                <div class="value">2025년 8월 6일</div>
-
-                <div class="label">업태 / 종목</div>
-                <div class="value">정보통신업 / 응용 소프트웨어 개발 및 공급업</div>
-
-                <div class="label">사업장 소재지</div>
-                <div class="value">서울특별시 영등포구 경인로 882, 1103호 (영등포동1가, 여의도씨티아이)</div>
-
-                <div class="label">이메일</div>
-                <div class="value"><a href="mailto:seal5945@gmail.com">seal5945@gmail.com</a></div>
+    <nav>
+        <div class="container nav-inner">
+            <a href="#" class="nav-brand">
+                <span class="nav-chip">P</span>
+                <span>PlayWith</span>
+            </a>
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#apps">Apps</a>
+                <a href="#contact">Contact</a>
             </div>
-        </section>
+        </div>
+    </nav>
 
-        <section>
-            <h2>Our Apps</h2>
-            <div class="app-card">
-                <h3>ChipMate Holdem</h3>
-                <p>
-                    오프라인 포커 홈게임을 위한 실시간 칩 추적 도구.
-                    QR 코드로 친구들을 초대하고, 칩 잔고와 베팅 액션을 한눈에 관리합니다.
-                </p>
-                <div class="app-meta">
-                    <strong>Platform:</strong> Android &nbsp;·&nbsp;
-                    <strong>Package:</strong> com.chipmate.holdem &nbsp;·&nbsp;
-                    <strong>Status:</strong> Coming soon to Google Play
+    <section class="hero">
+        <div class="container">
+            <div class="hero-eyebrow">🇰🇷 Mobile App Studio · Seoul, South Korea</div>
+            <h1>Crafting apps<br>worth playing with.</h1>
+            <p>플레이위드는 일상의 작은 순간을 더 즐겁게 만드는<br>모바일 앱을 만드는 1인 스튜디오입니다.</p>
+            <a href="#apps" class="hero-cta">
+                Our work →
+            </a>
+        </div>
+    </section>
+
+    <section class="block" id="about">
+        <div class="container">
+            <div class="section-label">About</div>
+            <h2>잘 만든 도구는, 조용히 사용자를 빛나게 합니다.</h2>
+            <p class="section-intro">
+                플레이위드(PlayWith)는 서울에 기반을 둔 모바일 앱 개발 스튜디오입니다.
+                화려한 기능보다 정성스러운 디테일에 집중하며,
+                매일 쓰고 싶은 도구형 앱을 만듭니다.
+            </p>
+            <div class="values">
+                <div class="value-card">
+                    <div class="value-icon">🎯</div>
+                    <h3>User First</h3>
+                    <p>사용자가 첫 1초에 이해할 수 있는 인터페이스. 학습 곡선 없는 도구를 만듭니다.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">✨</div>
+                    <h3>Polished Details</h3>
+                    <p>애니메이션, 타이포그래피, 간격까지 — 보이지 않는 곳에 시간을 씁니다.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">🔒</div>
+                    <h3>Privacy by Default</h3>
+                    <p>최소한의 데이터만 수집하고, 광고 외 사용자 정보를 판매하지 않습니다.</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section>
-            <h2>Legal</h2>
-            <p>
-                <a href="https://quaint-zipper-37a.notion.site/ChipMate-Holdem-34ec6666fc6b808aa9c4c7a9e876427c" target="_blank" rel="noopener">
-                    ChipMate Holdem 개인정보처리방침 →
-                </a>
-            </p>
-        </section>
+    <section class="block" id="apps">
+        <div class="container">
+            <div class="section-label">Our Apps</div>
+            <h2>Currently shipping</h2>
+            <p class="section-intro">현재 플레이위드가 만들고 있는 앱입니다.</p>
+            <div class="app-showcase">
+                <div class="app-icon-large"></div>
+                <div class="app-info">
+                    <h3>ChipMate Holdem</h3>
+                    <p class="tagline">Real-time poker chip tracker for in-person home games.</p>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 8px;">
+                        QR 코드로 친구들을 초대하고, 칩 잔고와 베팅 액션을 한눈에.
+                        오프라인 포커판의 디지털 뱅커.
+                    </p>
+                    <div class="app-meta">
+                        <span class="pill">Android</span>
+                        <span class="pill">Multiplayer</span>
+                        <span class="pill muted">com.chipmate.holdem</span>
+                        <span class="pill muted">Coming soon to Google Play</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        <footer>
-            &copy; 2026 플레이위드 (PlayWith). All rights reserved.<br>
-            Contact: <a href="mailto:seal5945@gmail.com">seal5945@gmail.com</a>
-        </footer>
-    </div>
+    <section class="block" id="contact">
+        <div class="container">
+            <div class="section-label">Studio Info</div>
+            <h2>Business Information</h2>
+            <p class="section-intro">공식 사업자 정보와 연락처입니다.</p>
+            <div class="business-card">
+                <div class="info-grid">
+                    <div class="label">Studio</div>
+                    <div class="value-text">플레이위드 (PlayWith)</div>
+
+                    <div class="label">Founder</div>
+                    <div class="value-text">주은오 (Joo Eun Oh)</div>
+
+                    <div class="label">사업자등록번호</div>
+                    <div class="value-text">880-58-00862</div>
+
+                    <div class="label">개업일</div>
+                    <div class="value-text">2025년 8월 6일</div>
+
+                    <div class="label">업태 / 종목</div>
+                    <div class="value-text">정보통신업 / 응용 소프트웨어 개발 및 공급업</div>
+
+                    <div class="label">사업장 소재지</div>
+                    <div class="value-text">서울특별시 영등포구 경인로 882, 1103호 (영등포동1가, 여의도씨티아이)</div>
+
+                    <div class="label">Email</div>
+                    <div class="value-text"><a href="mailto:seal5945@gmail.com">seal5945@gmail.com</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="https://quaint-zipper-37a.notion.site/ChipMate-Holdem-34ec6666fc6b808aa9c4c7a9e876427c" target="_blank" rel="noopener">Privacy Policy</a>
+                <a href="mailto:seal5945@gmail.com">Contact</a>
+            </div>
+            <div>&copy; 2026 플레이위드 (PlayWith). All rights reserved.</div>
+            <div style="margin-top: 6px; font-size: 0.8rem;">Made with care in Seoul, South Korea.</div>
+        </div>
+    </footer>
 </body>
 </html>
